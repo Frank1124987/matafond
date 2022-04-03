@@ -1,0 +1,26 @@
+// @import "node_modules/bootstrap/scss/functions.scss";
+
+$primary: white;
+$secondary: #323278;
+$light: #357aa1;
+
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'light' : $light
+) ;
+
+$custom-colors: (
+    "strong": #4e76da,
+    "button": #4f4883,
+    
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+
+// @import "node_modules/bootstrap/scss/variables.scss";
+// @import "node_modules/bootstrap/scss/mixins.scss";
