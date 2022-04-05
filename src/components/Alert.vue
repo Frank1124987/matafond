@@ -76,17 +76,7 @@ export default {
     line-height: 200px;
     border-radius: 20px;
 
-    // display: -webkit-box;
-    // display: -webkit-flex;
-    // display: -ms-flexbox;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
-
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
-    box-shadow: 0px 3px 8px rgba(0 0 0 / 24%);
     -moz-box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.24);
     -webkit-box-shadow: 0px 3px 8px rgba(0 0 0 / 24%);
     -o-box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.24);

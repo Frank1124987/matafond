@@ -5,12 +5,6 @@
             <div class="col-12 col-md-6 " >
                 <div class="p-4 wrap-card-img">
                     <img src="@/assets/nft.gif" class="" alt="">
-                    <!-- <VideoPlayer/> -->
-                    <!-- <div class="m-4">
-                        <h3 class="my-2 fw-bold" style="color: #B22222">
-                            愛麗絲的『理』國度
-                        </h3>
-                    </div> -->
                 </div>
             </div>
             <div class="col-12 col-md-6 ">
@@ -136,7 +130,7 @@
 </div>
 </template>
 <script>
-import {computed, ref, watch, onMounted, onUnmounted} from 'vue'
+import { ref, watch, onMounted} from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
 import {useRouter} from 'vue-router'
 import ABI from '@/contract/contractABI.js'
@@ -181,7 +175,6 @@ export default {
                     console.log(error)
                 })
             }else{
-                // !TODO: Remind mobile user to switch to desktop
 
                 window.open("https://metamask.io/download/")
             }
