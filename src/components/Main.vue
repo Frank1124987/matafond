@@ -1,10 +1,16 @@
 <template>
-<div class="wrap-container h-100">
+<div class="wrap-container position-relative h-100">
     <div class="container-fluid p-4 p-sm-5  h-100 container-center-content" :style="{'background-image': 'url(' + require('../assets/bg-01.jpg') + ')' , 'filter': brightness }">
         <div class="row justify-content-center bg-primary container-content overflow-scroll">
             <div class="col-12 col-md-6 " >
                 <div class="p-4 wrap-card-img">
-                    <img src="@/assets/index.jpg" class="" alt="">
+                    <img src="@/assets/nft.gif" class="" alt="">
+                    <!-- <VideoPlayer/> -->
+                    <!-- <div class="m-4">
+                        <h3 class="my-2 fw-bold" style="color: #B22222">
+                            愛麗絲的『理』國度
+                        </h3>
+                    </div> -->
                 </div>
             </div>
             <div class="col-12 col-md-6 ">
@@ -15,8 +21,8 @@
                                 專案介紹
                             </h1>
                         </div>
-                        <div class="">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim maxime amet odit nihil optio tempore eum sunt, non doloribus natus?
+                        <div class="wrap-card-content-block-text">
+                            本專案為畢聯會為籌活動款項（2022 陽明交大畢業歌MV製作暨畢業季活動：畢聯盃校際球類大賽、畢業歌錄製、畢業歌MV等）建立之加密貨幣募資項目。
                         </div>
                     </div>
                     <div class="wrap-card-content-block">
@@ -25,8 +31,8 @@
                                 募資金額
                             </h1>
                         </div>
-                        <div class="">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim maxime amet odit nihil optio tempore eum sunt, non doloribus natus?
+                        <div class="wrap-card-content-block-text">
+                            2ETH(約20萬台幣)，經本屆活動使用完之餘額將留與下屆使用。
                         </div>
                     </div>
                     <div class="wrap-card-content-block">
@@ -35,28 +41,28 @@
                                 附屬活動
                             </h1>
                         </div>
-                        <div class="">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim maxime amet odit nihil optio tempore eum sunt, non doloribus natus?
+                        <div class="wrap-card-content-block-text">
+                                凡前100名捐款者（不限金額），都能獲得一個畢業歌NFT數位紀念品。
                         </div>
                     </div>
                     <div class="wrap-card-content-block">
                         <div class="wrap-card-content-block-title">
                             <h1 class="my-2 text-light fw-bold">
-                                聯絡資訊
+                                聯絡/負責單位
                             </h1>
                         </div>
-                        <div class="">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim maxime amet odit nihil optio tempore eum sunt, non doloribus natus?
+                        <div class="wrap-card-content-block-text">
+                            <a class="text-button" href="https://www.facebook.com/NYCUGrad.ChiaoTung">陽明交通大學交大校區畢聯會</a> 
                         </div>
                     </div>
                     <div class="wrap-card-content-block">
                         <div class="wrap-card-content-block-title">
                             <h1 class="my-2 text-light fw-bold">
-                                負責單位
+                                智能合約地址
                             </h1>
                         </div>
-                        <div class="">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim maxime amet odit nihil optio tempore eum sunt, non doloribus natus?
+                        <div class="wrap-card-content-block-text">
+                            <a href="https://etherscan.io/address/0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B" class="text-button">0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B</a>
                         </div>
                     </div>
                 </div>
@@ -66,7 +72,6 @@
                         {{ connectOrDonate }}
                     </button>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -101,7 +106,7 @@
                             </h1>
                         </div>
                         <div class="wrap-card-content-block-text ">
-                            ?
+                            2 ETH
                         </div>
                     </div>
                     <div class="wrap-card-content-block">
@@ -127,6 +132,7 @@
             </div>
         </div>  
     </div>
+    <Alert v-if="alertBox" :alertMessage="alertMessage" @closeAlertBox.once="closeAlertBox"/>
 </div>
 </template>
 <script>
@@ -134,9 +140,13 @@ import {computed, ref, watch, onMounted, onUnmounted} from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
 import {useRouter} from 'vue-router'
 import ABI from '@/contract/contractABI.js'
+import Alert from '@/components/Alert.vue'
+// import VideoPlayer from '@/components/VideoPlayer.vue'
 
 export default {
     components: {
+        Alert,
+        // VideoPlayer
     },
     setup(){
         const router = useRouter()
@@ -149,6 +159,8 @@ export default {
         const donationAmount = ref(0)
         const invalidInput = ref(false)
         const loadingDonate = ref(false)
+        const alertBox = ref(false)
+        const alertMessage = ref("")
 
         let web3
         let contract
@@ -158,9 +170,10 @@ export default {
                 web3.eth.requestAccounts().then( async () => {
                     const currentNet = await web3.eth.net.getNetworkType()
                     if (currentNet !== 'main'){
-                        alert("請換到主鏈")
-                    }else{
+                        alertBox.value = true
+                        alertMessage.value = "請換到主鏈"
                     }
+
                     const accounts = await web3.eth.getAccounts()
                     currentAddress.value = accounts[0]
 
@@ -198,31 +211,42 @@ export default {
             brightness.value = "brightness(1)"
         }
 
-        const donate = () => {
-            
+        const closeAlertBox = () => {
+            alertBox.value = false
+        }
+
+        const donate = async () => {
+            const currentNet = await web3.eth.net.getNetworkType()
+
+
             if (donationAmount.value > 0 ){
-                // const amount = donationAmount.value.toString()
-                // const weiValue = Web3.utils.toWei(amount, 'ether')
-                // const weiValueNum = Number(weiValue)
-                // console.log(weiValue)
-                // console.log(currentAddress.value)
+                // !TODO : Formal edition
+                if(currentNet !== '0x1'){
+                    alertBox.value = true
+                    alertMessage.value = "請換到主鏈"
+                    return
+                }
+
+                loadingDonate.value = true
+                invalidInput.value = false
 
                 const wei = donationAmount.value * 1000000000000000000
 
-                loadingDonate.value = true
                 contract.methods.donate().send({
                     from: currentAddress.value,
                     value: wei
                 }).then(() => {
                     loadingDonate.value = false
 
-                    alert("成功")
-                    router.go(0)
+                    alertBox.value = true
+                    alertMessage.value = "捐款成功"
                 }).catch(() => {
                     loadingDonate.value = false
-                    alert("錯誤")
+                    alertBox.value = true
+                    alertMessage.value = "捐款失敗"
                 })
             }else{
+                loadingDonate.value = false
                 invalidInput.value = true
             }
         }   
@@ -235,7 +259,7 @@ export default {
 
 
                 web3 = new Web3(Web3.givenProvider)
-                contract = new web3.eth.Contract(ABI, '0x3a5B6AFE6f7A0D3DC0E375098A9441b1197eaD0C')
+                contract = new web3.eth.Contract(ABI, '0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B')
 
                 const accounts = await web3.eth.getAccounts()
                 if(accounts.length){
@@ -258,7 +282,8 @@ export default {
 
                 ethereum.on('chainChanged', (newChainId) => {
                     if(newChainId !== '0x1'){
-                        alert("You had the wrong network, Please switch to main")
+                        alertBox.value = true
+                        alertMessage.value = "請換到主鏈"
                     }
                 })
 
@@ -286,20 +311,19 @@ export default {
             donationAmount,
             donate,
             invalidInput,
-            loadingDonate
+            loadingDonate,
+            alertBox,
+            alertMessage,
+            closeAlertBox
         }
     }
 }
 </script>
 <style lang="scss" scoped>
+.wrap-container{
+    z-index: auto;
+}
 
-.container{
-    max-width: 1080px;
-}
-.d-flex{
-    z-index: 2;
-    position: relative;
-}
 
 .container-center-content{
     display: -webkit-box;
@@ -309,10 +333,12 @@ export default {
 
     align-items: center;
     justify-content: center;   
+    background-size: 100% 100%;
 
 }
 
 .container-content{
+    max-width: 1080px;
     border-radius: 20px;
     position: relative;
     height: 100%;
@@ -349,10 +375,17 @@ export default {
 
     align-items: center;
     justify-content: center;
-
+    flex-direction: column;
     height: 100%;
     img{
         border-radius: 20px;
+        width: 330px;
+        height: 330px;
+
+        @media (max-width: 576px){
+            width: 300px;
+            height: 300px;
+    }
     }
 }
 
@@ -382,7 +415,6 @@ export default {
 }
 
 .wrap-card-content-popup{
-    // width: calc(100% - var(--bs-gutter-x));
     position: absolute;
     top: 50%;
     left: 50%;
@@ -416,10 +448,9 @@ export default {
     bottom: 0;
     z-index: 1;
 
-    // box-shadow: 0px 15px 10px -15px #000;
-    // box-shadow: inset rgba(0, 0, 0, 0.08) 0px 4px 0px;
     button{
         border-radius: 10px;
+        width: 100%;
     }
 }
 
@@ -473,7 +504,7 @@ $duration: 1.4s;
 @keyframes dash {
  0% { stroke-dashoffset: $offset; }
  50% {
-   stroke-dashoffset: $offset/4;
+   stroke-dashoffset: calc($offset/4);
    transform:rotate(135deg);
  }
  100% {
