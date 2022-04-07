@@ -4,7 +4,8 @@
         <div class="row justify-content-center bg-primary container-content overflow-scroll">
             <div class="col-12 col-md-6 " >
                 <div class="p-4 wrap-card-img">
-                    <img src="@/assets/nft.gif" class="" alt="">
+                    <img src="@/assets/nft.gif" class="wrap-card-img-nft" alt="">
+                    <img src="@/assets/title.jpeg" class="wrap-card-img-title" alt="">
                 </div>
             </div>
             <div class="col-12 col-md-6 ">
@@ -36,7 +37,7 @@
                             </h1>
                         </div>
                         <div class="wrap-card-content-block-text">
-                                凡前100名捐款者（不限金額），都能獲得一個畢業歌NFT數位紀念品。
+                                凡前100名捐款者（不限金額），都能獲得一個畢業歌NFT（如圖）數位紀念品。
                         </div>
                     </div>
                     <div class="wrap-card-content-block">
@@ -57,6 +58,8 @@
                         </div>
                         <div class="wrap-card-content-block-text">
                             <a href="https://etherscan.io/address/0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B" class="text-button">0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B</a>
+                            <br>
+                            （請勿直接使用此地址交易）
                         </div>
                     </div>
                 </div>
@@ -145,7 +148,7 @@ export default {
     setup(){
         const router = useRouter()
 
-        const connectOrDonate = ref("連接Metamask")
+        const connectOrDonate = ref("按此連結Metamask")
         const connected = ref(false)
         const brightness = ref("brightness(1)")
         const popUp = ref(false)
@@ -289,7 +292,7 @@ export default {
             if (newValue){
                 connectOrDonate.value = "我要捐款"
             }else{
-                connectOrDonate.value = "連接Metamask"
+                connectOrDonate.value = "按此連結Metamask"
             }
         }, {immediate: true})
 
@@ -370,7 +373,8 @@ export default {
     justify-content: center;
     flex-direction: column;
     height: 100%;
-    img{
+
+    .wrap-card-img-nft{
         border-radius: 20px;
         width: 330px;
         height: 330px;
@@ -378,7 +382,12 @@ export default {
         @media (max-width: 576px){
             width: 300px;
             height: 300px;
+        }
     }
+
+    .wrap-card-img-title{
+        width: 275px;
+        margin: 1.5rem 0;
     }
 }
 
