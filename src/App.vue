@@ -9,8 +9,11 @@
 :root{
   body {
     margin: 0;
-    height: 100vh;
     padding: 0;
+    
+    @media (min-width: 768px){
+        height: 100vh;
+    }
   }
 }
 
@@ -20,7 +23,9 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-    height: 100vh;
+    @media (min-width: 768px){
+        height: 100vh;
+    }
 
 }
 

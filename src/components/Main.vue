@@ -1,6 +1,6 @@
 <template>
-<div class="wrap-container position-relative h-100">
-    <div class="container-fluid p-4 p-sm-5  h-100 container-center-content" :style="{'background-image': 'url(' + require('../assets/bg-01.jpg') + ')' , 'filter': brightness }">
+<div class="wrap-container position-relative">
+    <div class="container-fluid p-4 p-sm-5 container-center-content" :style="{'background-image': 'url(' + require('../assets/bg-01.jpg') + ')' , 'filter': brightness }">
         <div class="row justify-content-center bg-primary container-content overflow-scroll">
             <div class="col-12 col-md-6 " >
                 <div class="p-4 wrap-card-img">
@@ -318,6 +318,9 @@ export default {
 <style lang="scss" scoped>
 .wrap-container{
     z-index: auto;
+    @media (min-width: 768px){
+        height: 100%;
+    }
 }
 
 
@@ -331,6 +334,9 @@ export default {
     justify-content: center;   
     background-size: 100% 100%;
 
+    @media (min-width: 768px){
+        height: 100%;
+    }
 }
 
 .container-content{
