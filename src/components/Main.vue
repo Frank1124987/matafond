@@ -72,8 +72,9 @@
             </div>
         </div>
     </div>
-    <div id="wrap-popup" v-show="popUp">
-        <div id="donate-popup"  class="wrap-card-content-popup p-4" >
+    <PopUp v-show="popUp" :web3="web3" :contract="contract" :current-address="currentAddress" @button-click-close="closePopUp" @pop-alert-box="popAlertBox"/>
+    <!-- <div id="wrap-popup" v-show="popUp"> -->
+        <!-- <div id="donate-popup"  class="wrap-card-content-popup p-4" >
             <div class="wrap-card-content-popup-close" @click="closePopUp">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
@@ -127,8 +128,8 @@
                     </div>
                 </div>
             </div>
-        </div>  
-    </div>
+        </div>  -->
+    <!-- </div> -->
     <Alert v-if="alertBox" :alertMessage="alertMessage" @closeAlertBox.once="closeAlertBox"/>
 </div>
 </template>
@@ -138,33 +139,36 @@ import Web3 from 'web3/dist/web3.min.js'
 import {useRouter} from 'vue-router'
 import ABI from '@/contract/contractABI.js'
 import Alert from '@/components/Alert.vue'
+import PopUp from '@/components/MainPopUp.vue'
 // import VideoPlayer from '@/components/VideoPlayer.vue'
 
 export default {
     components: {
         Alert,
+        PopUp
         // VideoPlayer
     },
     setup(){
+        
         const router = useRouter()
 
         const connectOrDonate = ref("按此連結Metamask")
         const connected = ref(false)
-        const brightness = ref("brightness(1)")
         const popUp = ref(false)
+        const brightness = ref("brightness(1)")
         const currentAddress = ref("")
-        const donationAmount = ref(0)
-        const invalidInput = ref(false)
-        const loadingDonate = ref(false)
+        // const donationAmount = ref(0)
+        // const invalidInput = ref(false)
+        // const loadingDonate = ref(false)
         const alertBox = ref(false)
         const alertMessage = ref("")
 
-        let web3
-        let contract
+        const web3 = ref(null)
+        const contract = ref(null)
 
         const buttonClickConnect = () => {
             if (typeof window.ethereum !== 'undefined'){
-                web3.eth.requestAccounts().then( async () => {
+                web3.value.eth.requestAccounts().then( async () => {
                     const currentNet = await web3.eth.net.getNetworkType()
                     if (currentNet !== 'main'){
                         alertBox.value = true
@@ -196,12 +200,6 @@ export default {
             }
         }
 
-        const closePopUpWindow = (event) => {
-            if (event.target.id === 'wrap-popup'){
-                closePopUp()
-            }
-        }
-
         const closePopUp = () => {
             popUp.value = false
             brightness.value = "brightness(1)"
@@ -211,41 +209,46 @@ export default {
             alertBox.value = false
         }
 
-        const donate = async () => {
-            const currentNet = await web3.eth.net.getNetworkType()
+        const popAlertBox = (message) => {
+            alertBox.value = true
+            alertMessage.value = message
+        }
+
+        // const donate = async () => {
+        //     const currentNet = await web3.eth.net.getNetworkType()
 
 
-            if (donationAmount.value > 0 ){
-                // !TODO : Formal edition
-                if(currentNet !== '0x1'){
-                    alertBox.value = true
-                    alertMessage.value = "請換到主鏈"
-                    return
-                }
+        //     if (donationAmount.value > 0 ){
+        //         // !TODO : Formal edition
+        //         if(currentNet !== '0x1'){
+        //             alertBox.value = true
+        //             alertMessage.value = "請換到主鏈"
+        //             return
+        //         }
 
-                loadingDonate.value = true
-                invalidInput.value = false
+        //         loadingDonate.value = true
+        //         invalidInput.value = false
 
-                const wei = donationAmount.value * 1000000000000000000
+        //         const wei = donationAmount.value * 1000000000000000000
 
-                contract.methods.donate().send({
-                    from: currentAddress.value,
-                    value: wei
-                }).then(() => {
-                    loadingDonate.value = false
+        //         contract.methods.donate().send({
+        //             from: currentAddress.value,
+        //             value: wei
+        //         }).then(() => {
+        //             loadingDonate.value = false
 
-                    alertBox.value = true
-                    alertMessage.value = "捐款成功"
-                }).catch(() => {
-                    loadingDonate.value = false
-                    alertBox.value = true
-                    alertMessage.value = "捐款失敗"
-                })
-            }else{
-                loadingDonate.value = false
-                invalidInput.value = true
-            }
-        }   
+        //             alertBox.value = true
+        //             alertMessage.value = "捐款成功"
+        //         }).catch(() => {
+        //             loadingDonate.value = false
+        //             alertBox.value = true
+        //             alertMessage.value = "捐款失敗"
+        //         })
+        //     }else{
+        //         loadingDonate.value = false
+        //         invalidInput.value = true
+        //     }
+        // }   
 
 
         onMounted(async() => {
@@ -254,10 +257,10 @@ export default {
                 // console.log("1",window.ethereum )
 
 
-                web3 = new Web3(Web3.givenProvider)
-                contract = new web3.eth.Contract(ABI, '0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B')
+                web3.value = new Web3(Web3.givenProvider)
+                contract.value = new web3.value.eth.Contract(ABI, '0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B')
 
-                const accounts = await web3.eth.getAccounts()
+                const accounts = await web3.value.eth.getAccounts()
                 if(accounts.length){
                     connected.value = true
                     currentAddress.value = accounts[0]   
@@ -269,7 +272,7 @@ export default {
                     if (newAccounts.length){
                         connected.value = true
 
-                        const accounts = await web3.eth.getAccounts()
+                        const accounts = await web3.value.eth.getAccounts()
                         currentAddress.value = accounts[0]   
                     }else{
                         connected.value = false
@@ -278,12 +281,9 @@ export default {
 
                 ethereum.on('chainChanged', (newChainId) => {
                     if(newChainId !== '0x1'){
-                        alertBox.value = true
-                        alertMessage.value = "請換到主鏈"
+                        popAlertBox("請換到主鏈")
                     }
                 })
-
-                window.addEventListener('click', closePopUpWindow)
 
             }
         })
@@ -304,18 +304,17 @@ export default {
             brightness,
             closePopUp,
             currentAddress,
-            donationAmount,
-            donate,
-            invalidInput,
-            loadingDonate,
             alertBox,
             alertMessage,
-            closeAlertBox
+            closeAlertBox,
+            web3,
+            contract,
+            popAlertBox
         }
     }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .wrap-container{
     z-index: auto;
     @media (min-width: 768px){
@@ -422,33 +421,6 @@ export default {
     z-index: 2;
 }
 
-.wrap-card-content-popup{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    width: 70vw;
-    height: 70vh;
-    @media (max-width: 576px){
-        width: 90vw;
-        height: 85vh;
-    }
-
-    background-color: white;
-
-    z-index: 3;
-    border-radius: 20px;
-
-}
-
-.wrap-card-content-popup-close{
-    position: absolute;
-    top: 1.8rem;
-    right: 1.5rem;
-
-    cursor: pointer;
-}
 
 .wrap-card-button{
     position: sticky;

@@ -23,5 +23,5 @@ pnpm-debug.log*
 *.sw?
 
 # Under develop
-VideoPlayer.vue
-pause.json
+# VideoPlayer.vue
+# pause.json
