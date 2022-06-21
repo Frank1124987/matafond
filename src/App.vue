@@ -14,6 +14,7 @@
     @media (min-width: 768px){
         height: 100vh;
     }
+
   }
 }
 
@@ -26,7 +27,6 @@
     @media (min-width: 768px){
         height: 100vh;
     }
-
 }
 
 #nav {
