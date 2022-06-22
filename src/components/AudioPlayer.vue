@@ -24,7 +24,7 @@ export default {
   },
   props: {
     audio: {
-      require: true,
+      required: true,
       type: String
     }
   },

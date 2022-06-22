@@ -57,7 +57,7 @@
             </div>
         </div>
     </div>
-    <Donate v-show="popUp" :web3="web3" :contract="contract" :current-address="currentAddress" @button-click-close="closePopUp" @pop-alert-box="popAlertBox"/>
+    <Donate v-show="popUp" :web3="web3" :contract="contract" :current-address="currentAddress" :target="school.profile.target" @button-click-close="closePopUp" @pop-alert-box="popAlertBox"/>
     <Alert v-if="alertBox" :alertMessage="alertMessage" @closeAlertBox.once="closeAlertBox"/>
 </div>
 </template>
@@ -82,7 +82,7 @@ export default {
     },
     props: {
         school: {
-            require: true,
+            required: true,
             type: Object
         }
     },

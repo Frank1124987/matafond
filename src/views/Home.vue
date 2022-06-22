@@ -31,7 +31,8 @@ export default {
         "logo" : "nycu/title.jpeg",
         "audio" : "nycu/alice.wav",
         "osLink" : "",
-        "svLink" : "https://streetvoice.com/xlohapprdx_/songs/686189/"
+        "svLink" : "https://streetvoice.com/xlohapprdx_/songs/686189/",
+        "target" : "2 ETH"
       },
       "content": [
         {"title": "專案介紹", "description" : "本專案為畢聯會為籌活動款項（2022 陽明交大畢業歌MV製作暨畢業季活動：畢聯盃校際球類大賽、畢業歌錄製、畢業歌MV等）建立之加密貨幣募資項目。"},
@@ -48,7 +49,8 @@ export default {
         "logo" : "nthu/logo.png",
         "audio" : "nthu/audio.mp3",
         "osLink" : "",
-        "svLink" : "https://streetvoice.com/sunlex_lin/songs/686958/"
+        "svLink" : "https://streetvoice.com/sunlex_lin/songs/686958/",
+        "target" : ""
       },
       "content": [
         {"title": "附屬活動", "description" : "凡前100名捐款者（不限金額），都能獲得一個畢業歌NFT（如圖）數位紀念品。"}

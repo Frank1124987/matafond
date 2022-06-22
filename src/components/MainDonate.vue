@@ -29,7 +29,7 @@
                         </h1>
                     </div>
                     <div class="wrap-card-content-block-text ">
-                        2 ETH
+                        {{ target }}
                     </div>
                 </div>
                 <div class="wrap-card-content-block">
@@ -73,6 +73,9 @@ export default {
         },
         currentAddress: {
             required: true
+        },
+        target: {
+            // required: true
         }
     },
     setup(props, {emit}){

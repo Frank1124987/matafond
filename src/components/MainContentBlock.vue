@@ -14,7 +14,7 @@
 export default {
     props: {
         contentBlock : {
-            // require: true,
+            required: true,
             type: Object
         }
     },

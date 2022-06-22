@@ -11,11 +11,8 @@
 import {onMounted, ref} from "vue"
 import {useRoute, useRouter} from 'vue-router'
 export default {
-    props: {
-        // school
-    },
     emits: ['switchSchool'],
-    setup(props, {emit}){
+    setup(){
         const school = ref(false)
         const route = useRoute()
         const router = useRouter()
