@@ -1,24 +1,24 @@
 <template>
 <div class="wrap-container position-relative">
-    <div class="container-fluid p-4 p-sm-5 container-center-content" :style="{'background-image': 'url(' + require('../assets/nycu/bg-01.jpg') + ')' , 'filter': brightness }">
+    <div class="container-fluid p-4 p-sm-5 container-center-content" :style="{'background-image': 'url(' + require(`@/assets/${school.backgroundImg}`) + ')' , 'filter': brightness }">
         <div class="row justify-content-center bg-primary container-content">
             <div class="col-12">
-                <Navbar @switch-school="switchSchool"/>
+                <Navbar/>
             </div>
 
             <div class="col-12 col-md-6 wrap-content wrap-column " ref="wrapColumn" :style="{'align-items': centerOrStart}" >
                 <div class="p-4 wrap-card-img" ref="wrapCardImg"> 
-                    <img src="@/assets/nycu/nft.gif" class="wrap-card-img-nft" alt="">
-                    <img src="@/assets/nycu/title.jpeg" class="wrap-card-img-title" alt="">
-                    <AudioPlayer/>
+                    <img :src="require(`@/assets/${school.profile.nftImg}`)" class="wrap-card-img-nft" alt="">
+                    <img :src="require(`@/assets/${school.profile.logo}`)" class="wrap-card-img-title" alt="">
+                    <AudioPlayer :audio="school.profile.audio"/>
                     <div class="wrap-card-img-social">
                         <div>
-                            <a href="">
+                            <a :href="school.profile.osLink">
                                 <img src="@/assets/nycu/os_logo_square.png">
                             </a>
                         </div>
                         <div>
-                            <a href="https://streetvoice.com/xlohapprdx_/songs/686189/">
+                            <a :href="school.profile.svLink">
                                 <img src="@/assets/nycu/sv_logo_square.png" alt="" srcset="">
                             </a>
                         </div>
@@ -27,45 +27,8 @@
             </div>
             <div class="col-12 col-md-6 wrap-content " ref="wrapCard" >
                     <div class=" wrap-card-content px-4 " >
-                        <div class="wrap-card-content-block">
-                            <div class="wrap-card-content-block-title">
-                                <h1 class="my-2 text-light fw-bold">
-                                    專案介紹
-                                </h1>
-                            </div>
-                            <div class="wrap-card-content-block-text">
-                                本專案為畢聯會為籌活動款項（2022 陽明交大畢業歌MV製作暨畢業季活動：畢聯盃校際球類大賽、畢業歌錄製、畢業歌MV等）建立之加密貨幣募資項目。
-                            </div>
-                        </div>
-                        <div class="wrap-card-content-block">
-                            <div class="wrap-card-content-block-title">
-                                <h1 class="my-2 text-light fw-bold">
-                                    募資金額
-                                </h1>
-                            </div>
-                            <div class="wrap-card-content-block-text">
-                                2ETH(約20萬台幣)，經本屆活動使用完之餘額將留與下屆使用。
-                            </div>
-                        </div>
-                        <div class="wrap-card-content-block">
-                            <div class="wrap-card-content-block-title">
-                                <h1 class="my-2 text-light fw-bold">
-                                    附屬活動
-                                </h1>
-                            </div>
-                            <div class="wrap-card-content-block-text">
-                                    凡前100名捐款者（不限金額），都能獲得一個畢業歌NFT（如圖）數位紀念品。
-                            </div>
-                        </div>
-                        <div class="wrap-card-content-block">
-                            <div class="wrap-card-content-block-title">
-                                <h1 class="my-2 text-light fw-bold">
-                                    聯絡/負責單位
-                                </h1>
-                            </div>
-                            <div class="wrap-card-content-block-text">
-                                <a class="text-button" href="https://www.facebook.com/NYCUGrad.ChiaoTung">陽明交通大學交大校區畢聯會</a> 
-                            </div>
+                        <div v-for="(block, id) in school.content" :key="id">
+                            <ContentBlock :contentBlock="block"/>
                         </div>
                         <div class="wrap-card-content-block">
                             <div class="wrap-card-content-block-title">
@@ -101,22 +64,29 @@
 <script>
 import { ref, watch, onMounted} from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
-import {useRouter} from 'vue-router'
+import {useRoute,useRouter} from 'vue-router'
 import ABI from '@/contract/contractABI.js'
 import Alert from '@/components/Alert.vue'
 import Donate from '@/components/MainDonate.vue'
 import AudioPlayer from '@/components/AudioPlayer.vue'
 import Navbar from '@/components/MainNavbar.vue'
-
+import ContentBlock from '@/components/MainContentBlock.vue'
 
 export default {
     components: {
         Alert,
         Donate,
         AudioPlayer,
-        Navbar
+        Navbar,
+        ContentBlock
     },
-    setup(){
+    props: {
+        school: {
+            require: true,
+            type: Object
+        }
+    },
+    setup(props){
         const connectOrDonate = ref("按此連結Metamask")
         const connected = ref(false)
         const popUp = ref(false)
@@ -137,11 +107,12 @@ export default {
         const wrapCardImg = ref()
 
         // !TODO: temporary
-        const school = ref()
-        const switchSchool = () => {
-            school.value = !school.value
-            console.log(school.value)
-        }
+        // const school = ref()
+        // const switchSchool = () => {
+        //     school.value = !school.value
+        //     console.log(school.value)
+        // }
+
 
         const buttonClickConnect = () => {
             if (typeof window.ethereum !== 'undefined'){
@@ -241,6 +212,7 @@ export default {
 
             // scrollable observer
             // !ISSUE: it will generate a 1px movement
+
             // const intersectOptionsContent = {
             //     root : wrapCard.value,
             //     rootMargin : "0px 0px 0px 0px",
@@ -307,7 +279,6 @@ export default {
             wrapColumn,
             wrapCardImg,
             centerOrStart,
-            switchSchool
         }
     }
 }

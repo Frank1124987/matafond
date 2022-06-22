@@ -3,9 +3,17 @@ import Home from '../views/Home.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/home/:school',
     name: 'Home',
-    component: Home
+    component: Home,
+  },
+  {
+    path: '/',
+    redirect: {path: '/home/nycu'}
+  },
+  { path: '/:pathMatch(.*)*', 
+  name: 'NotFound', 
+  component: () => import('../views/NotFound.vue')
   },
 ]
 

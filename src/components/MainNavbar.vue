@@ -1,14 +1,15 @@
 <template>
     <div id="navbar">
         <div class="wrap-navbar-option">
-            <button type="button" class="btn border-4 fs-4" @click="switchSchoolT" :class="{'btn-selected' : school}">交大</button>
-            <button type="button" class="btn border-4 fs-4" @click="switchSchoolF" :class="{'btn-selected' : !school}">清大</button>
+            <button type="button" class="btn border-4 fs-4" @click="switchSchoolT" :class="{'btn-selected' : school}">交通大學</button>
+            <button type="button" class="btn border-4 fs-4" @click="switchSchoolF" :class="{'btn-selected' : !school}">清華大學</button>
         </div>
     </div>
 </template>
 
 <script>
-import {ref} from "vue"
+import {onMounted, ref} from "vue"
+import {useRoute, useRouter} from 'vue-router'
 export default {
     props: {
         // school
@@ -16,16 +17,29 @@ export default {
     emits: ['switchSchool'],
     setup(props, {emit}){
         const school = ref(false)
+        const route = useRoute()
+        const router = useRouter()
+
+        onMounted(()=> {
+            if (route.params.school === 'nycu'){
+                school.value = true
+            }else{
+                school.value = false
+            }
+        })
+
 
         const switchSchoolT = () => {
             if (!school.value){
-                emit('switchSchool')
+                // emit('switchSchool')
+                router.push('/home/nycu')
             }
             school.value = true
         }
         const switchSchoolF = () => {
             if (school.value){
-                emit('switchSchool')
+                // emit('switchSchool')
+                router.push('/home/nthu')
             }
             school.value = false
         }

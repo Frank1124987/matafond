@@ -1,7 +1,14 @@
 <template>
-  <router-view/>
+  <router-view :key="$route.path"/>
 </template>
-
+<script>
+import {useRoute} from 'vue-router'
+export default {
+  setup(){
+    const route = useRoute()
+  }
+}
+</script>
 <style lang="scss">
 @import '@/style/bootstrapCustom.scss';
 @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@700&display=swap');
