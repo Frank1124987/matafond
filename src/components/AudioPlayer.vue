@@ -1,6 +1,5 @@
 <template>
     <div class="wrap-audioplayer">
-        <!-- <AudioPlayer :option="playerOptions"/> -->
         <AudioPlayer 
           :audio-list="audioList.map((elm) => elm.url)"
           :show-prev-button = "false"
@@ -35,7 +34,6 @@ export default {
       url : require(`@/assets/${props.audio}`)
       // url: "https://drive.google.com/file/d/1S5Zqqn5ZFt_izxFILfbUcSlRS_TN-bT2/view?usp=sharing"
     }])
-
 
     return{
       audioList

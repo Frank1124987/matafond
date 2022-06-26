@@ -5,21 +5,29 @@
             <div class="col-12">
                 <Navbar/>
             </div>
-
             <div class="col-12 col-md-6 wrap-content wrap-column " ref="wrapColumn" :style="{'align-items': centerOrStart}" >
                 <div class="p-4 wrap-card-img" ref="wrapCardImg"> 
                     <img :src="require(`@/assets/${school.profile.nftImg}`)" class="wrap-card-img-nft" alt="">
-                    <img :src="require(`@/assets/${school.profile.logo}`)" class="wrap-card-img-title" alt="">
+                    <img v-if="school.id == 0" :src="require(`@/assets/${school.profile.logo}`)" class="wrap-card-img-title" alt="">
+                    <h1 v-else class="wrap-card-img-logo">{{ school.profile.logo }}</h1>
                     <AudioPlayer :audio="school.profile.audio"/>
                     <div class="wrap-card-img-social">
                         <div>
                             <a :href="school.profile.osLink">
-                                <img src="@/assets/nycu/os_logo_square.png">
+                                <img src="@/assets/share/os_logo_square.png">
                             </a>
                         </div>
                         <div>
                             <a :href="school.profile.svLink">
-                                <img src="@/assets/nycu/sv_logo_square.png" alt="" srcset="">
+                                <img src="@/assets/share/sv_logo_square.png" alt="" srcset="">
+                            </a>
+                        </div>
+                        <div>
+                            <a :href="school.profile.ytLink" style="color: #dc3545 ">
+                                <!-- <img src="@/assets/nycu/yt_logo_circle.png" alt="" srcset=""> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
+                                <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z"/>
+                                </svg>
                             </a>
                         </div>
                     </div>
@@ -57,14 +65,13 @@
             </div>
         </div>
     </div>
-    <Donate v-show="popUp" :web3="web3" :contract="contract" :current-address="currentAddress" :target="school.profile.target" @button-click-close="closePopUp" @pop-alert-box="popAlertBox"/>
+    <Donate v-show="popUp" :web3="web3" :contract="contract" :current-address="currentAddress" :id="school.id" :donateBalance="donateBalance" :nftStock="nftStock" :target="school.profile.target" @button-click-close="closePopUp" @pop-alert-box="popAlertBox"/>
     <Alert v-if="alertBox" :alertMessage="alertMessage" @closeAlertBox.once="closeAlertBox"/>
 </div>
 </template>
 <script>
 import { ref, watch, onMounted} from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
-import {useRoute,useRouter} from 'vue-router'
 import ABI from '@/contract/contractABI.js'
 import Alert from '@/components/Alert.vue'
 import Donate from '@/components/MainDonate.vue'
@@ -106,13 +113,15 @@ export default {
         const centerOrStart = ref("center")
         const wrapCardImg = ref()
 
+        const donateBalance = ref()
+        const nftStock = ref()
+
         // !TODO: temporary
         // const school = ref()
         // const switchSchool = () => {
         //     school.value = !school.value
         //     console.log(school.value)
         // }
-
 
         const buttonClickConnect = () => {
             if (typeof window.ethereum !== 'undefined'){
@@ -177,9 +186,20 @@ export default {
                 //  !ISSUE: Why can't I access selectedAddress from here
                 // console.log("1",window.ethereum )
 
-
                 web3.value = new Web3(Web3.givenProvider)
-                contract.value = new web3.value.eth.Contract(ABI, '0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B')
+                contract.value = new web3.value.eth.Contract(ABI, '0xA638a85b28cE7411196e4a3E2f10aa0665b4CE44')
+
+                contract.value.methods.getBalance(props.school.id).call({
+                    from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73",
+                }).then((result) => {
+                    donateBalance.value = result
+                })
+                
+                contract.value.methods.getStock(props.school.id).call({
+                    from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73",
+                }).then((result) => {
+                    nftStock.value = result
+                })
 
                 const accounts = await web3.value.eth.getAccounts()
                 if(accounts.length){
@@ -190,8 +210,8 @@ export default {
                 }
 
                 ethereum.on('accountsChanged', async (newAccounts) => {
-                    console.log("account changed")
                     if (newAccounts.length){
+                        // console.log("change")
                         connected.value = true
                         const accounts = await web3.value.eth.getAccounts()
                         currentAddress.value = accounts[0]   
@@ -279,6 +299,8 @@ export default {
             wrapColumn,
             wrapCardImg,
             centerOrStart,
+            donateBalance,
+            nftStock
         }
     }
 }
@@ -398,6 +420,11 @@ export default {
     .wrap-card-img-title{
         width: 275px;
         margin: 1.5rem 0;
+    }
+
+    .wrap-card-img-logo{
+        margin: 1.5rem 0;
+        height: 35px;
     }
 }
 

@@ -15,7 +15,7 @@
                 <div class="wrap-card-content-block">
                     <div class="wrap-card-content-block-title">
                         <h1 class="my-2 text-light fw-bold">
-                            您的地址
+                            您的目前連線地址
                         </h1>
                     </div>
                     <div class="wrap-card-content-block-text ">
@@ -25,11 +25,24 @@
                 <div class="wrap-card-content-block">
                     <div class="wrap-card-content-block-title">
                         <h1 class="my-2 text-light fw-bold">
-                            目標金額
+                            已募金額/目標金額
                         </h1>
                     </div>
                     <div class="wrap-card-content-block-text ">
-                        {{ target }}
+                        {{ (donateBalance / 1000000000000000000).toFixed(8) }}&emsp;/&emsp;{{ target }}&emsp;ETH
+                    </div>
+                    <div class="wrap-card-content-block-progress progress w-50 ">
+                        <div class="progress-bar bg-button" role="progressbar" :style="{'width': progressWidth} " aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="wrap-card-content-block">
+                    <div class="wrap-card-content-block-title">
+                        <h1 class="my-2 text-light fw-bold">
+                            NFT剩餘數量
+                        </h1>
+                    </div>
+                    <div class="wrap-card-content-block-text bg-red ">
+                        {{nftStock}}
                     </div>
                 </div>
                 <div class="wrap-card-content-block">
@@ -43,6 +56,9 @@
                             <label for="donation-amount-eth">ETH:&emsp;&emsp;</label>
                             <input id="donation-amount-eth" class="input-number" type="number" step="any" :class="{'input-valid': invalidInput}" v-model="donationAmountEth" required>
                             <label class="px-2">= GWEI: {{donationAmountGwei}} </label>
+                            <h5 class="pt-4">
+                                （不限金額都會獲得NFT）
+                            </h5>
                             <div class="my-4">
                                 <button v-if="!loadingDonate" type="submit" class="btn btn-outline-strong custom-btn w-75">捐款</button>               
                                 <svg v-else class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
@@ -60,7 +76,7 @@
 <script>
 import { computed, onMounted } from '@vue/runtime-core'
 // import Web3 from 'web3/dist/web3.min.js'
-import {ref, watch} from 'vue'
+import {ref} from 'vue'
 
 export default {
     emits: ['buttonClickClose', 'popAlertBox'],
@@ -75,7 +91,16 @@ export default {
             required: true
         },
         target: {
-            // required: true
+            required: true
+        },
+        id: {
+            required: true
+        },
+        donateBalance: {
+            required: true
+        },
+        nftStock: {
+            required: true
         }
     },
     setup(props, {emit}){
@@ -83,6 +108,8 @@ export default {
         const invalidInput = ref(false)
         const donationAmountEth = ref(0)
         const donationAmountGwei = computed(() => donationAmountEth.value * 1000000000)
+        const progressWidth = ref()
+
 
         const closePopUpWindow = (event) => {
             if (event.target.id === 'wrap-popup'){
@@ -93,11 +120,11 @@ export default {
         const closePopUp = () => {
            emit('buttonClickClose')
         }
-
+        
         const donate = async () => {
-            // console.log(props.currentAddress)
+            let currentNet
             try{
-                const currentNet = await props.web3.eth.net.getNetworkType()
+                currentNet = await props.web3.eth.net.getNetworkType()
             }catch(e){
                 emit("popAlertBox", "取得Metamask網路類別錯誤")
             }
@@ -109,8 +136,8 @@ export default {
 
             if (donationAmountEth.value > 0 ){
                 if(currentNet !== '0x1'){
-                    emit('popAlertBox', "請換到主鏈")
-                    return 
+                    // emit('popAlertBox', "請換到主鏈")
+                    // return 
                 }
 
                 loadingDonate.value = true
@@ -118,7 +145,8 @@ export default {
 
                 const wei = donationAmountEth.value * 1000000000000000000
 
-                props.contract.methods.donate().send({
+                // !TODO: try
+                props.contract.methods.donate(props.id).send({
                     from: props.currentAddress,
                     value: wei
                 }).then(() => {
@@ -130,6 +158,7 @@ export default {
                     loadingDonate.value = false
                     emit('popAlertBox', "捐款失敗")
                 })
+
             }else{
                 loadingDonate.value = false
                 invalidInput.value = true
@@ -148,7 +177,7 @@ export default {
             donationAmountGwei,
             invalidInput,
             loadingDonate,
-            currentAddress: computed(() => props.currentAddress)
+            progressWidth: computed(() => parseFloat((props.donateBalance/1000000000000000000)/props.target).toFixed(2)+'%' )
         }
     }
 }
@@ -180,6 +209,12 @@ export default {
     right: 2.2rem;
 
     cursor: pointer;
+}
+
+.wrap-card-content-block-progress{
+    margin: 1rem auto ;
+    max-width: 50%;
+    min-width: 200px;
 }
 
 .overflow-custom{
