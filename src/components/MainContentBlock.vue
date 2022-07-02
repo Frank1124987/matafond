@@ -5,8 +5,7 @@
                 {{ contentBlock.title }}
             </h1>
         </div>
-        <div class="wrap-card-content-block-text">
-            {{ contentBlock.description }}
+        <div v-html="contentBlock.description" class="wrap-card-content-block-text">
         </div>
     </div>
 </template>
@@ -24,5 +23,7 @@ export default {
 }
 </script>
 <style lang="scss">
-    
+a {
+    color: black;
+}
 </style>

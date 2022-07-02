@@ -59,6 +59,9 @@
                             <h5 class="pt-4">
                                 （不限金額都會獲得NFT）
                             </h5>
+                            <h5 class="pt-1">
+                                （每個地址限領一個）
+                            </h5>
                             <div class="my-4">
                                 <button v-if="!loadingDonate" type="submit" class="btn btn-outline-strong custom-btn w-75">捐款</button>               
                                 <svg v-else class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
@@ -108,8 +111,6 @@ export default {
         const invalidInput = ref(false)
         const donationAmountEth = ref(0)
         const donationAmountGwei = computed(() => donationAmountEth.value * 1000000000)
-        const progressWidth = ref()
-
 
         const closePopUpWindow = (event) => {
             if (event.target.id === 'wrap-popup'){
@@ -136,8 +137,8 @@ export default {
 
             if (donationAmountEth.value > 0 ){
                 if(currentNet !== '0x1'){
-                    // emit('popAlertBox', "請換到主鏈")
-                    // return 
+                    emit('popAlertBox', "請換到主鏈")
+                    return 
                 }
 
                 loadingDonate.value = true
