@@ -138,21 +138,22 @@ export default {
             if (typeof window.ethereum !== 'undefined'){
                 // !TODO: Maybe change all to await?
                 web3.value.eth.requestAccounts().then( async () => {
+                    let currentNet
                     try{
-                        const currentNet = await props.web3.eth.net.getNetworkType()
+                        currentNet = await props.web3.eth.net.getNetworkType()
                     }catch(e){
-                        emit("popAlertBox", "取得Metamask網路類別錯誤")
+                        popAlertBox("取得Metamask網路類別錯誤")
                     }
 
                     if (currentNet !== 'main'){
-                        alertBox.value = true
-                        alertMessage.value = "請換到主鏈"
+                        popAlertBox("請換到主鏈")
                     }
                     
+                    let accounts
                     try{
-                        const accounts = await web3.value.eth.getAccounts()
+                        accounts = await web3.value.eth.getAccounts()
                     }catch(e){
-                        emit("popAlertBox", "取得Metamask地址錯誤")
+                        popAlertBox("取得Metamask地址錯誤")
                     }
 
                     currentAddress.value = accounts[0]
