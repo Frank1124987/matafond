@@ -8,7 +8,7 @@
             <div class="col-12 col-md-6 wrap-content wrap-column " ref="wrapColumn" :style="{'align-items': centerOrStart}" >
                 <div class="p-4 wrap-card-img" ref="wrapCardImg"> 
                     <img :src="require(`@/assets/${school.profile.nftImg}`)" class="wrap-card-img-nft" alt="">
-                    <img v-if="school.id == 0" :src="require(`@/assets/${school.profile.logo}`)" class="wrap-card-img-title" alt="">
+                    <img v-if="school.id == 113" :src="require(`@/assets/${school.profile.logo}`)" class="wrap-card-img-title" alt="">
                     <h1 v-else class="wrap-card-img-logo">{{ school.profile.logo }}</h1>
                     <AudioPlayer :audio="school.profile.audio"/>
                     <div class="wrap-card-img-social">
@@ -44,7 +44,7 @@
                                 </h1>
                             </div>
                             <div class="wrap-card-content-block-text">
-                                <a href="https://etherscan.io/address/0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B" class="text-button">0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B</a>
+                                <a href="https://etherscan.io/address/0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B" class="text-button">{{contractAddress}}</a>
                                 <br>
                                 （請勿直接使用此地址交易）
                             </div>
@@ -56,7 +56,7 @@
                                 </h1>
                             </div>
                             <div class="wrap-card-content-block-text">
-                                款金額會以比例方式負擔NFT上鏈費用
+                                捐款金額會以比例方式負擔NFT上鏈費用
                             </div>
                         </div>
 
@@ -124,6 +124,8 @@ export default {
 
         const donateBalance = ref()
         const nftStock = ref()
+        
+        const contractAddress = ref("0x969E42140E09Ba33f77d0212F5ef529BEe4eeF3a")
 
         // !TODO: temporary
         // const school = ref()
@@ -196,7 +198,7 @@ export default {
                 // console.log("1",window.ethereum )
 
                 web3.value = new Web3(Web3.givenProvider)
-                contract.value = new web3.value.eth.Contract(ABI, '0xA638a85b28cE7411196e4a3E2f10aa0665b4CE44')
+                contract.value = new web3.value.eth.Contract(ABI, contractAddress.value)
 
                 contract.value.methods.getBalance(props.school.id).call({
                     from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73",
@@ -309,7 +311,8 @@ export default {
             wrapCardImg,
             centerOrStart,
             donateBalance,
-            nftStock
+            nftStock,
+            contractAddress
         }
     }
 }
