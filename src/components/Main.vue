@@ -125,7 +125,7 @@ export default {
         const donateBalance = ref()
         const nftStock = ref()
         
-        const contractAddress = ref("0x969E42140E09Ba33f77d0212F5ef529BEe4eeF3a")
+        const contractAddress = ref("0x8da1f83Aae0E62b0265772Fb632D93fbe1c79F0a")
 
         // !TODO: temporary
         // const school = ref()
