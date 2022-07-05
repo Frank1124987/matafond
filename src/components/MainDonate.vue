@@ -136,10 +136,10 @@ export default {
             }
 
             if (donationAmountEth.value > 0 ){
-                // if(currentNet !== '0x1'){
-                //     emit('popAlertBox', "請換到主鏈")
-                //     return 
-                // }
+                if(currentNet !== '0x1'){
+                    emit('popAlertBox', "請換到主鏈")
+                    return 
+                }
 
                 loadingDonate.value = true
                 invalidInput.value = false

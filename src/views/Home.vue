@@ -31,7 +31,7 @@ export default {
       "profile": {
         "nftImg" : "nycu/nft.gif",
         "logo" : "nycu/title.jpeg",
-        "audio" : "nycu/alice.wav",
+        "audio" : "nycu/alice.mp3",
         "osLink" : "",
         "svLink" : "https://streetvoice.com/xlohapprdx_/songs/686189/",
         "ytLink" : "https://youtu.be/t7Q8mPJmiNA",
