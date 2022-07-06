@@ -29,10 +29,10 @@
                         </h1>
                     </div>
                     <div class="wrap-card-content-block-text ">
-                        {{ (donateBalance / 1000000000000000000).toFixed(8) }}&emsp;/&emsp;{{ target }}&emsp;ETH
+                        {{ (donateBalance / 1000000000000000000).toFixed(5) }}&emsp;/&emsp;{{ target }}&emsp;ETH
                     </div>
                     <div class="wrap-card-content-block-progress progress w-50 ">
-                        <div class="progress-bar bg-button" role="progressbar" :style="{'width': progressWidth} " aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-button" role="progressbar" :style="{'width': progressWidth}" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
                 <div class="wrap-card-content-block">
@@ -136,10 +136,10 @@ export default {
             }
 
             if (donationAmountEth.value > 0 ){
-                // if(currentNet !== '0x1'){
-                //     emit('popAlertBox', "請換到主鏈")
-                //     return 
-                // }
+                if(currentNet !== '0x1'){
+                    emit('popAlertBox', "請換到主鏈")
+                    return 
+                }
 
                 loadingDonate.value = true
                 invalidInput.value = false

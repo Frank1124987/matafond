@@ -14,7 +14,7 @@
 
 
 <script>
-import {ref, onMounted, reactive} from 'vue'
+import {ref} from 'vue'
 import AudioPlayer from "@liripeng/vue-audio-player";
 
 export default {

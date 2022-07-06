@@ -32,7 +32,7 @@ export default {
         "nftImg" : "nycu/nft.gif",
         "logo" : "nycu/title.jpeg",
         "audio" : "nycu/alice.mp3",
-        "osLink" : "",
+        "osLink" : "https://opensea.io/assets/ethereum/0x3094a90b792d6448ad845c60f0ca137edd4706ab/113",
         "svLink" : "https://streetvoice.com/xlohapprdx_/songs/686189/",
         "ytLink" : "https://youtu.be/t7Q8mPJmiNA",
         "target" : 7
@@ -51,7 +51,7 @@ export default {
         "nftImg" : "nthu/nft.jpg",
         "logo" : "青空",
         "audio" : "nthu/audio.mp3",
-        "osLink" : "",
+        "osLink" : "https://opensea.io/assets/ethereum/0x3094a90b792d6448ad845c60f0ca137edd4706ab/114",
         "svLink" : "https://streetvoice.com/sunlex_lin/songs/686958/",
         "ytLink" : "https://youtu.be/AJG2CoxqTkw",
         "target" : 7

@@ -44,7 +44,7 @@
                                 </h1>
                             </div>
                             <div class="wrap-card-content-block-text">
-                                <a href="https://etherscan.io/address/0xb3F3f2c42Ba77F42f7CaB788478E292AE3A9Df3B" class="text-button">{{contractAddress}}</a>
+                                <a :href="'https://etherscan.io/address/'+contractAddress" class="text-button">{{contractAddress}}</a>
                                 <br>
                                 （請勿直接使用此地址交易）
                             </div>
@@ -125,7 +125,7 @@ export default {
         const donateBalance = ref()
         const nftStock = ref()
         
-        const contractAddress = ref("0x8da1f83Aae0E62b0265772Fb632D93fbe1c79F0a")
+        const contractAddress = ref("0x3094A90B792d6448AD845C60f0ca137EdD4706ab")
 
         // !TODO: temporary
         // const school = ref()
@@ -202,13 +202,13 @@ export default {
                 contract.value = new web3.value.eth.Contract(ABI, contractAddress.value)
 
                 contract.value.methods.getBalance(props.school.id).call({
-                    from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73",
+                    from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73"
                 }).then((result) => {
                     donateBalance.value = result
                 })
                 
                 contract.value.methods.getStock(props.school.id).call({
-                    from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73",
+                    from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73"
                 }).then((result) => {
                     nftStock.value = result
                 })
