@@ -140,13 +140,13 @@ export default {
                 web3.value.eth.requestAccounts().then( async () => {
                     let currentNet
                     try{
-                        currentNet = await props.web3.eth.net.getNetworkType()
+                        currentNet = await web3.value.eth.net.getNetworkType()
                     }catch(e){
                         popAlertBox("取得Metamask網路類別錯誤")
                     }
 
                     if (currentNet !== 'main'){
-                        popAlertBox("請換到主鏈")
+                        popAlertBox("請換到主鏈(切換之後請重新整理)")
                     }
                     
                     let accounts
@@ -166,7 +166,13 @@ export default {
             }
         }
 
-        const buttonClickDonate = () => {
+        const buttonClickDonate = async () => {
+            let currentNet = await web3.value.eth.net.getNetworkType()
+
+            if (currentNet !== 'main'){
+                popAlertBox("請換到主鏈(切換之後請重新整理)")
+            }
+
             popUp.value = true
             brightness.value = "brightness(0.5)"            
         }
@@ -236,7 +242,7 @@ export default {
 
                 ethereum.on('chainChanged', (newChainId) => {
                     if(newChainId !== '0x1'){
-                        popAlertBox("請換到主鏈")
+                        popAlertBox("請換到主鏈(切換之後請重新整理)")
                     }
                 })
 
