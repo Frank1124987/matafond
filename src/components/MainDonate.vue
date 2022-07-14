@@ -41,8 +41,16 @@
                             NFT剩餘數量
                         </h1>
                     </div>
-                    <div class="wrap-card-content-block-text bg-red ">
-                        {{nftStock}}
+                    <div>
+                        <div class="wrap-card-content-block-text bg-red ">
+                            {{nftStock}}
+                        </div>
+                        <h5 class="pt-4">
+                            (不限金額都會獲得NFT)
+                        </h5>
+                        <h5 class="pt-1">
+                            （每個地址限領一個）
+                        </h5>
                     </div>
                 </div>
                 <div class="wrap-card-content-block">
@@ -56,12 +64,8 @@
                             <label for="donation-amount-eth">ETH:&emsp;&emsp;</label>
                             <input id="donation-amount-eth" class="input-number" type="number" step="any" :class="{'input-valid': invalidInput}" v-model="donationAmountEth" required>
                             <label class="px-2">= GWEI: {{donationAmountGwei}} </label>
-                            <h5 class="pt-4">
-                                （不限金額都會獲得NFT）
-                            </h5>
-                            <h5 class="pt-1">
-                                （每個地址限領一個）
-                            </h5>
+                            <br>
+                            <br>
                             <div class="my-4">
                                 <button v-if="!loadingDonate" type="submit" class="btn btn-outline-strong custom-btn w-75">捐款</button>               
                                 <svg v-else class="spinner" width="35px" height="35px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +81,7 @@
 </div>
 </template>
 <script>
-import { computed, onMounted } from '@vue/runtime-core'
+import { computed, onMounted, onUnmounted } from '@vue/runtime-core'
 // import Web3 from 'web3/dist/web3.min.js'
 import {ref} from 'vue'
 
@@ -111,7 +115,7 @@ export default {
         const invalidInput = ref(false)
         const donationAmountEth = ref(0)
         const donationAmountGwei = computed(() => donationAmountEth.value * 1000000000)
-
+        
         const closePopUpWindow = (event) => {
             if (event.target.id === 'wrap-popup'){
                 closePopUp()
@@ -168,8 +172,15 @@ export default {
 
         onMounted(() =>{
             window.addEventListener('click', closePopUpWindow)
+
+            if (props.nftStock === '0'){
+                emit("popAlertBox", "NFT已全數送出")
+            }
         })
 
+        onUnmounted(() => {
+            window.removeEventListener('click', closePopUpWindow)
+        })
 
         return{
             closePopUp,

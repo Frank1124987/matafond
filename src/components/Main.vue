@@ -58,8 +58,11 @@
                             <div class="wrap-card-content-block-text">
                                 捐款金額會以比例方式負擔NFT上鏈費用
                             </div>
+                            <div class="wrap-card-content-block-text">
+                                若有任何問題請聯絡：matafond2022@gmail.com
+                            </div>
                         </div>
-
+                        
                     </div>
                     <div class="wrap-card-button d-grid bg-primary" ref="button">
                         <div v-show="scrollable" class="wrap-card-scrollable">
@@ -74,7 +77,7 @@
             </div>
         </div>
     </div>
-    <Donate v-show="popUp" :web3="web3" :contract="contract" :current-address="currentAddress" :id="school.id" :donateBalance="donateBalance" :nftStock="nftStock" :target="school.profile.target" @button-click-close="closePopUp" @pop-alert-box="popAlertBox"/>
+    <Donate v-if="popUp" :web3="web3" :contract="contract" :current-address="currentAddress" :id="school.id" :donateBalance="donateBalance" :nftStock="nftStock" :target="school.profile.target" @button-click-close="closePopUp" @pop-alert-box="popAlertBox"/>
     <Alert v-if="alertBox" :alertMessage="alertMessage" @closeAlertBox.once="closeAlertBox"/>
 </div>
 </template>
