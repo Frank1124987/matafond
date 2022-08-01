@@ -75,11 +75,10 @@
                                 </a>
                             </div>
                             <div class="wrap-card-content-block-text">
-                                捐款金額會以比例方式負擔NFT上鏈費用
+                                各校畢聯會並無參與，請勿聯絡各校畢聯會
                             </div>
                             <div class="wrap-card-content-block-text">
                                 若有任何問題請聯絡：matafond2022@gmail.com
-                                （請勿聯絡各校畢聯會）
                             </div>
                         </div>
                         
