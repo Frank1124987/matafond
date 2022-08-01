@@ -40,6 +40,20 @@
                         <div class="wrap-card-content-block">
                             <div class="wrap-card-content-block-title">
                                 <h1 class="my-2 text-light fw-bold">
+                                    活動截止
+                                </h1>
+                            </div>
+                            <div class="wrap-card-content-block-text">
+                                (符合以下任一條件)
+                                <br>
+                                1、 活動開始後一個月為期。(不論NFT是否發完，是否募到目標金額皆結束一切募款及發放行為)
+                                <br>
+                                2、 募滿目標金額(7以太幣)且111枚NFT亦發放完畢。
+                            </div>
+                        </div>
+                        <div class="wrap-card-content-block">
+                            <div class="wrap-card-content-block-title">
+                                <h1 class="my-2 text-light fw-bold">
                                     智能合約地址
                                 </h1>
                             </div>
@@ -56,10 +70,16 @@
                                 </h1>
                             </div>
                             <div class="wrap-card-content-block-text">
+                                <a href="@/assets/share/proposal.docx" download>
+                                    企劃書連結
+                                </a>
+                            </div>
+                            <div class="wrap-card-content-block-text">
                                 捐款金額會以比例方式負擔NFT上鏈費用
                             </div>
                             <div class="wrap-card-content-block-text">
                                 若有任何問題請聯絡：matafond2022@gmail.com
+                                （請勿聯絡各校畢聯會）
                             </div>
                         </div>
                         
@@ -82,9 +102,10 @@
 </div>
 </template>
 <script>
-import { ref, watch, onMounted} from 'vue'
+import { ref, watch, onMounted, onUpdated} from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
-import ABI from '@/contract/contractABI.js'
+// import ABI from '@/contract/contractABI.js'
+import ABI from '@/contract/contractABI_test.js'
 import Alert from '@/components/Alert.vue'
 import Donate from '@/components/MainDonate.vue'
 import AudioPlayer from '@/components/AudioPlayer.vue'
@@ -128,7 +149,7 @@ export default {
         const donateBalance = ref()
         const nftStock = ref()
         
-        const contractAddress = ref("0x3094A90B792d6448AD845C60f0ca137EdD4706ab")
+        const contractAddress = ref("0x8da1f83Aae0E62b0265772Fb632D93fbe1c79F0a")
 
         // !TODO: temporary
         // const school = ref()
@@ -250,7 +271,6 @@ export default {
                 })
 
             }
-
             // scrollable observer
             // !ISSUE: it will generate a 1px movement
 
