@@ -104,8 +104,8 @@
 <script>
 import { ref, watch, onMounted, onUpdated} from 'vue'
 import Web3 from 'web3/dist/web3.min.js'
-// import ABI from '@/contract/contractABI.js'
-import ABI from '@/contract/contractABI_test.js'
+import ABI from '@/contract/contractABI.js'
+// import ABI from '@/contract/contractABI_test.js'
 import Alert from '@/components/Alert.vue'
 import Donate from '@/components/MainDonate.vue'
 import AudioPlayer from '@/components/AudioPlayer.vue'
@@ -149,7 +149,7 @@ export default {
         const donateBalance = ref()
         const nftStock = ref()
         
-        const contractAddress = ref("0x8da1f83Aae0E62b0265772Fb632D93fbe1c79F0a")
+        const contractAddress = ref("0x3094A90B792d6448AD845C60f0ca137EdD4706ab")
 
         // !TODO: temporary
         // const school = ref()
