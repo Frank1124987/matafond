@@ -230,6 +230,7 @@ export default {
                 web3.value = new Web3(Web3.givenProvider)
                 contract.value = new web3.value.eth.Contract(ABI, contractAddress.value)
 
+                console.log(contract.value)
                 contract.value.methods.getBalance(props.school.id).call({
                     from: "0x959D3dBDEc126ee0A28aA2086991AA94Fe7Dcc73"
                 }).then((result) => {
