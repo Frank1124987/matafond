@@ -141,8 +141,7 @@ export default {
 
             if (donationAmountEth.value > 0 ){
                 if(currentNet !== 'main'){
-                    emit('popAlertBox', "請換到主鏈")
-                    console.log(currentNet)
+                    emit('popAlertBox', "請換到主鏈(切換之後請重新整理)")
                     return 
                 }
 
