@@ -265,7 +265,7 @@ export default {
                 })
 
                 ethereum.on('chainChanged', (newChainId) => {
-                    if(newChainId !== '0x1'){
+                    if(newChainId !== 'main'){
                         popAlertBox("請換到主鏈(切換之後請重新整理)")
                     }
                 })
