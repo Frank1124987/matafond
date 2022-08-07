@@ -70,7 +70,7 @@
                                 </h1>
                             </div>
                             <div class="wrap-card-content-block-text">
-                                <a href="/files/募款說明.pdf" download>
+                                <a href="/files/2022清交畢業歌NFT募資活動-募款說明.pdf" download>
                                     企劃書連結
                                 </a>
                             </div>
