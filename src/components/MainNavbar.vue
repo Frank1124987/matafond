@@ -1,7 +1,7 @@
 <template>
     <div id="navbar">
         <div class="wrap-navbar-option">
-            <button type="button" class="btn border-4 fs-4" @click="switchSchoolT" :class="{'btn-selected' : school}">交通大學</button>
+            <button type="button" class="btn border-4 fs-4" @click="switchSchoolT" :class="{'btn-selected' : school}">陽明交大</button>
             <button type="button" class="btn border-4 fs-4" @click="switchSchoolF" :class="{'btn-selected' : !school}">清華大學</button>
         </div>
     </div>
