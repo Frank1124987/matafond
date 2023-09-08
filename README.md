@@ -1,4 +1,6 @@
-# crypto-donate-lite-v2
+# Matafond
+
+The website is dedicated to raise funds for the graduation song team from NYCU and NTHU. Specifically crypto currency.
 
 ## Project setup
 ```
@@ -15,5 +17,3 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
