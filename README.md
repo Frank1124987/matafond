@@ -1,4 +1,4 @@
-# crypto-donate-lite-v2
+# This project is dedicated to raise fund for the NYCU and NCHU 2022 graduation song creation team.
 
 ## Project setup
 ```
@@ -14,6 +14,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
